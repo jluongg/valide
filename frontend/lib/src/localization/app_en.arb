@@ -4,8 +4,21 @@
     "description": "The title of the application"
   },
 
-  "loginButton": "Login",
-  "@loginButton": {
-    "description": "The login button"
-  }
+  "emailLoginButton": "Log in with email",  
+  "@emailLoginButton": {
+    "description": "Log in with email button."
+  },
+
+  "phoneLoginButton": "Log in with phone number",  
+  "@phoneLoginButton": {
+    "description": "Log in with phone number button."
+  },
+
+  "email": "Email",
+  "enter_email": "Enter your email address",
+  "please_enter_valid_email": "Please enter a valid email address",
+  "login": "login",
+  "verify_code": "Verify the code",
+  "password": "Password",
+  "enter_password": "Enter the received password"
 }

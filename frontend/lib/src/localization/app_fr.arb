@@ -4,8 +4,21 @@
     "description": "The title of the application"
   },
   
-  "loginButton": "Connexion",  
-  "@loginButton": {
-    "description": "Le bouton de connexion."
-  }
+  "emailLoginButton": "Se connecter par email",  
+  "@emailLoginButton": {
+    "description": "Le bouton de connexion par email."
+  },
+
+  "phoneLoginButton": "Se connecter avec un numéro téléphone",  
+  "@phoneLoginButton": {
+    "description": "Le bouton de connexion par téléphone."
+  },
+
+  "email": "Email",
+  "enter_email": "Saisir votre adresse mail",
+  "please_enter_valid_email": "Veuillez saisir une adresse mail valide",
+  "login": "Se connecter",
+  "verify_code": "Vérifier le code",
+  "password": "Mot de passe",
+  "enter_password": "Saisir le mot de passe reçu"
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:frontend/src/login/email_login_page.dart';
+import 'package:frontend/src/login/challenge_login_page.dart';
 
 import 'sample_feature/sample_item_details_view.dart';
 import 'sample_feature/sample_item_list_view.dart';
@@ -89,7 +91,16 @@ class Valide extends StatelessWidget {
                   return const SampleItemListView();
               }
             } else {
+              print(routeSettings.name);
               switch (routeSettings.name) {
+                case "/login/email":
+                  return EmailLoginPage(
+                      credentialsManager: credentialsManager,
+                      backendManager: backendManager);
+                case "/login/challenge":
+                  return ChallengeLoginPage(
+                      credentialsManager: credentialsManager,
+                      backendManager: backendManager);
                 default:
                   return MainLoginPage(
                     credentialsManager: credentialsManager,

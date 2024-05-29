@@ -31,16 +31,10 @@ class MainLoginPage extends StatelessWidget {
             SizedBox(height: 300),
             TextButton(
               onPressed: () async {
-                var result = await backendManager.isConnectionAlive();
-                print("Login button pressed");
-                if (result) {
-                  print("Connection alive");
-                } else {
-                  print("Connection dead");
-                }
+                Navigator.pushNamed(context, '/login/email');
               },
               child: Text(
-                AppLocalizations.of(context)!.loginButton,
+                AppLocalizations.of(context)!.emailLoginButton,
               ),
             )
           ],
