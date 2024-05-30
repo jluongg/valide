@@ -4,10 +4,13 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 import uvicorn
 
+
 app = FastAPI()
+
 
 class Item(BaseModel):
     name: str
+
 
 @app.post("/ping")
 async def create_item(item: Item):
@@ -16,6 +19,6 @@ async def create_item(item: Item):
         return "pong"
     return item
 
-    
-if __name__ == '__main__':
-    uvicorn.run(app, port=8080, host='0.0.0.0')
+
+if __name__ == "__main__":
+    uvicorn.run(app, port=8080, host="0.0.0.0")
