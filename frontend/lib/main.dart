@@ -5,8 +5,15 @@ import 'src/settings/settings_controller.dart';
 import 'src/settings/settings_service.dart';
 import 'src/managers/credentials_manager.dart';
 import 'src/managers/backend_manager.dart';
+import 'package:supertokens_flutter/supertokens.dart';
 
 void main() async {
+  // SuperTokens initialization
+  SuperTokens.init(
+    apiDomain: "192.168.35.51:8080",
+    apiBasePath: "/auth",
+  );
+
   // Set up the SettingsController, which will glue user settings to multiple
   // Flutter Widgets.
   final settingsController = SettingsController(SettingsService());
