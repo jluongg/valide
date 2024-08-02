@@ -2,6 +2,8 @@ from supertokens_python import init, InputAppInfo, SupertokensConfig
 from supertokens_python.recipe import passwordless, session, dashboard
 
 from supertokens_python.recipe.passwordless import ContactEmailOrPhoneConfig
+from supertokens_python.recipe import passwordless
+from supertokens_python.ingredients.emaildelivery.types import EmailDeliveryConfig, SMTPSettings, SMTPSettingsFrom
 
 
 init(
@@ -21,7 +23,21 @@ init(
         session.init(), # initializes session features
         passwordless.init(
             flow_type="USER_INPUT_CODE",
-            contact_config=ContactEmailOrPhoneConfig()
+            contact_config=ContactEmailOrPhoneConfig(),
+            email_delivery=EmailDeliveryConfig(
+                service=passwordless.SMTPService(
+                    smtp_settings=SMTPSettings(
+                        host="smtp.viaduc.fr",
+                        port=587,
+                        from_=SMTPSettingsFrom(
+                            name="Objet-du-mail",
+                            email="adresse-du-mail"
+                        ),
+                        password="mot-de-passe-du-mail",
+                        secure=False,
+                    )
+                )
+            )
         ),
         dashboard.init(),
     ],
