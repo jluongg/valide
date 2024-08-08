@@ -9,3 +9,5 @@ Faire un docker exec -it id-du-container.
 Une fois dans le container de la bdd, pour accéder à la bdd faire "psql -U nom-user -d nom-database".
 Verifier les creds dans le docker-compose.
 
+### Python
+Commande pour pipreqs, à éxécuter à partir du dossier backend : "pipreqs . --force --ignore venValide".
