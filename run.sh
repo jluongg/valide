@@ -7,7 +7,9 @@ if [ "$USER" == "guillaume" ]; then
     sudo systemctl enable docker --now
     echo "docker service launched"
     sudo docker compose up -d
-    echo "supertokens and postgresql dockers running" 
+    echo "supertokens and postgresql dockers running"
+    python3 backend/main.py &
+    echo "backend running"
 
 else
     echo "Hello $USER"

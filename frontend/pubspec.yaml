@@ -19,6 +19,11 @@ dependencies:
   http: ^1.2.1
   email_validator: ^2.1.16
   supertokens_flutter: ^0.5.1
+  provider: ^6.0.0
+  url_launcher: ^6.3.0
+  intl_phone_field: ^3.2.0
+  flutter_pin_code_fields: ^2.2.0
+  sms_autofill: ^2.0.0
 
 
 dev_dependencies:
@@ -183,3 +188,4 @@ flutter_native_splash:
   #  - 'ios/Runner/Info-Release.plist'
   #
   # To update icon settings : dart run flutter_native_splash:create
+  # To update localization files, save this file.

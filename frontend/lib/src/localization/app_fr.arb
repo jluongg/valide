@@ -3,22 +3,28 @@
   "@appTitle": {
     "description": "The title of the application"
   },
-  
-  "emailLoginButton": "Se connecter par email",  
-  "@emailLoginButton": {
-    "description": "Le bouton de connexion par email."
-  },
 
-  "phoneLoginButton": "Se connecter avec un numéro téléphone",  
+  "phoneLoginButton": "S'identifier",  
   "@phoneLoginButton": {
     "description": "Le bouton de connexion par téléphone."
   },
 
-  "email": "Email",
-  "enter_email": "Saisir votre adresse mail",
-  "please_enter_valid_email": "Veuillez saisir une adresse mail valide",
+  "phone_number": "Numéro de téléphone",
+  "enter_phone_number": "Numéro de téléphone",
+  "search_country": "Chercher un pays",
+  "please_enter_valid_phone_number": "Le numéro de téléphone n'est pas valide",
   "login": "Se connecter",
   "verify_code": "Vérifier le code",
   "password": "Mot de passe",
-  "enter_password": "Saisir le mot de passe reçu"
+  "enter_password": "Saisir le mot de passe reçu",
+  "connection_error": "Tu utilises l'application en mode hors ligne.",
+  "login_failed": "La connexion a échoué.",
+  "login_page_title": "Ton numéro ?",
+  "cgu_text": "En t'inscrivant, tu acceptes nos Conditions Générales d'Utilisation, notre Politique de confidentialité et notre Politique en matière de cookies. Ton utilisation de l'application est soumise à ces politiques, qui décrivent comment nous gérons tes données et utilisons les cookies.",
+  "cgu_url" : "https://www.valide.io/fr/cgu",
+  "cgu_link_text" : "Conditions Générales d'Utilisation",
+  "pol_confidentialite_url" : "https://www.valide.io/fr/confidentialite",
+  "pol_confidentialite_link_text" : "Politique de Confidentialité",
+  "cookies_link_text": "Politique en matière de cookies",
+  "challenge_page_title" : "Tu vas recevoir un SMS"
 }
