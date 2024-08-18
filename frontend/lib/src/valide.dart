@@ -1,34 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:frontend/src/login/email_login_page.dart';
+import 'package:frontend/src/login/login_page.dart';
 import 'package:frontend/src/login/challenge_login_page.dart';
+import 'package:frontend/src/login/find_voucher_page.dart';
 
-import 'sample_feature/sample_item_details_view.dart';
-import 'sample_feature/sample_item_list_view.dart';
-import 'settings/settings_controller.dart';
-import 'settings/settings_view.dart';
+import 'package:frontend/src/login/main_login_page.dart';
 
-import 'managers/credentials_manager.dart';
-import 'managers/backend_manager.dart';
-
-import 'login/main_login_page.dart';
+import 'package:frontend/src/graphic_charter.dart';
 
 /// The Widget that configures your application.
 class Valide extends StatelessWidget {
   const Valide({
     super.key,
-    required this.settingsController,
-    required this.credentialsManager,
-    required this.backendManager,
   });
-
-  final SettingsController settingsController;
-  final CredentialsManager credentialsManager;
-  final BackendManager backendManager;
 
   @override
   Widget build(BuildContext context) {
+    // Get the screen width and height
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+    bool isPortrait = screenWidth < screenHeight;
+    double minDim = isPortrait ? screenWidth : screenHeight;
+    double maxDim = isPortrait ? screenHeight : screenWidth;
+
+    var buttonFontSize = minDim * 0.05;
+
     return MaterialApp(
       // Providing a restorationScopeId allows the Navigator built by the
       // MaterialApp to restore the navigation stack when a user leaves and
@@ -60,17 +57,118 @@ class Valide extends StatelessWidget {
 
       // Define a theme.
       theme: ThemeData(
+        textTheme: const TextTheme(
+          titleLarge: TextStyle(
+            color: Colors.black,
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
+            // letterSpacing: 0.8,
+          ),
+          bodyLarge: TextStyle(
+            color: Colors.black,
+            fontSize: 20,
+          ),
+        ),
+        //
+        //
+        appBarTheme: const AppBarTheme(
+          color: Colors.white,
+          centerTitle: true,
+          // titleTextStyle: TextStyle(
+          //   color: Colors.black,
+          //   fontSize: 25,
+          //   fontWeight: FontWeight.bold,
+          //   letterSpacing: 0.8,
+          // ),
+          iconTheme: IconThemeData(
+            color: Colors.black,
+            size: 31,
+          ),
+        ),
+
+        filledButtonTheme: FilledButtonThemeData(
+          style: TextButton.styleFrom(
+              backgroundColor: pink, // Transparent background
+              foregroundColor: Colors.white, // Text color
+              disabledForegroundColor: Colors.grey,
+              disabledBackgroundColor: Color.fromRGBO(0, 0, 0, 0.1),
+              minimumSize: Size(minDim * 0.75, 0),
+              maximumSize: Size(minDim * 0.75, maxDim),
+              padding: const EdgeInsets.all(16),
+              alignment: Alignment.center,
+              textStyle: TextStyle(
+                fontSize: buttonFontSize,
+                fontWeight: FontWeight.w500,
+                color: Colors.white,
+              )),
+        ),
+//
+//
         textButtonTheme: TextButtonThemeData(
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(
-                Color.fromARGB(255, 222, 184, 65)),
-            foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-            textStyle: MaterialStateProperty.all<TextStyle>(
-              const TextStyle(
-                fontSize: 30.0,
-              ),
+          style: TextButton.styleFrom(
+              backgroundColor: Colors.transparent, // Transparent background
+              foregroundColor: pink, // Text color
+              disabledForegroundColor: Color.fromARGB(255, 212, 212, 212),
+              disabledBackgroundColor: Colors.transparent,
+              minimumSize: Size(minDim * 0.75, 0),
+              maximumSize: Size(minDim * 0.75, maxDim),
+              padding: const EdgeInsets.all(16),
+              alignment: Alignment.center,
+              textStyle: TextStyle(
+                fontSize: buttonFontSize,
+                fontWeight: FontWeight.w500,
+                color: pink,
+              )),
+        ),
+//
+//
+        inputDecorationTheme: InputDecorationTheme(
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30.0),
+            borderSide: const BorderSide(
+              color: pink,
             ),
           ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30.0),
+            borderSide: const BorderSide(
+              color: pink,
+              width: 1.0,
+            ),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30.0),
+            borderSide: const BorderSide(
+              color: gold,
+              width: 2.0,
+            ),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30.0),
+            borderSide: const BorderSide(
+              color: Colors.red,
+              width: 1.0,
+            ),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30.0),
+            borderSide: const BorderSide(
+              color: Colors.red,
+              width: 2.0,
+            ),
+          ),
+          labelStyle: TextStyle(
+              color: pink,
+              fontSize: buttonFontSize,
+              fontWeight: FontWeight.w400),
+          hintStyle: TextStyle(
+              color: pink,
+              fontSize: buttonFontSize,
+              fontWeight: FontWeight.w200),
+          errorStyle: TextStyle(
+              color: Colors.red,
+              fontSize: buttonFontSize * 0.75,
+              fontWeight: FontWeight.w400),
         ),
       ),
 
@@ -80,32 +178,16 @@ class Valide extends StatelessWidget {
         return MaterialPageRoute<void>(
           settings: routeSettings,
           builder: (BuildContext context) {
-            if (!credentialsManager.isUserConnected()) {
+            {
               switch (routeSettings.name) {
-                case SettingsView.routeName:
-                  return SettingsView(controller: settingsController);
-                case SampleItemDetailsView.routeName:
-                  return const SampleItemDetailsView();
-                case SampleItemListView.routeName:
-                default:
-                  return const SampleItemListView();
-              }
-            } else {
-              print(routeSettings.name);
-              switch (routeSettings.name) {
-                case "/login/email":
-                  return EmailLoginPage(
-                      credentialsManager: credentialsManager,
-                      backendManager: backendManager);
+                case "/login/phone":
+                  return const LoginPage();
                 case "/login/challenge":
-                  return ChallengeLoginPage(
-                      credentialsManager: credentialsManager,
-                      backendManager: backendManager);
+                  return const ChallengeLoginPage();
+                case "/account/voucher/find":
+                  return const FindVoucherPage();
                 default:
-                  return MainLoginPage(
-                    credentialsManager: credentialsManager,
-                    backendManager: backendManager,
-                  );
+                  return const MainLoginPage();
               }
             }
           },

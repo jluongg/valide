@@ -77,6 +77,7 @@ async def create_item(item: Item):
         return "pong"
     return item
 
+host = "0.0.0.0" #localhost usually, 0.0.0.0 if running on a real device 
 
 # root pour demander le dernier champ pas rempli
 
@@ -84,7 +85,7 @@ async def create_item(item: Item):
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:3000",
+        f"http://{host}:3000",
     ],
     allow_credentials=True,
     allow_methods=["GET", "PUT", "POST", "DELETE", "OPTIONS", "PATCH"],
@@ -92,4 +93,4 @@ app.add_middleware(
 )
 
 if __name__ == "__main__":
-    uvicorn.run(app, port=8080, host="localhost")
+    uvicorn.run(app, port=8080, host=host)

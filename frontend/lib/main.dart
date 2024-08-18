@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter/services.dart';
 
 import 'src/valide.dart';
 import 'src/settings/settings_controller.dart';
 import 'src/settings/settings_service.dart';
-import 'src/managers/credentials_manager.dart';
-import 'src/managers/backend_manager.dart';
+import 'src/providers/backend.dart';
 import 'package:supertokens_flutter/supertokens.dart';
+
+const backend_url =
+    '192.168.20.245:8080'; // This should be the ip of the machine on which the real device is connected (the inet part of ifconfig command) for the debug phase
 
 void main() async {
   // SuperTokens initialization
   SuperTokens.init(
-    apiDomain: "192.168.35.51:8080",
+    apiDomain: backend_url,
     apiBasePath: "/auth",
   );
 
@@ -23,16 +27,16 @@ void main() async {
   // to delete
   await settingsController.loadSettings();
 
-  // Load the user's saved credentials while the splash screen is displayed.
-  final credentialsManager = CredentialsManager();
-  await credentialsManager.loadCredentials();
+  WidgetsFlutterBinding.ensureInitialized();
 
-  // Create the backend manager.
-  final backendManager = BackendManager();
-
-  // Run the app and pass in the CredentialsManager.
-  runApp(Valide(
-      settingsController: settingsController,
-      credentialsManager: credentialsManager,
-      backendManager: backendManager));
+  // Lock the orientation to portrait mode only
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]).then((_) {
+    runApp(MultiProvider(providers: [
+      ChangeNotifierProvider(
+          create: (context) => Backend(baseUrl: backend_url)),
+    ], child: const Valide()));
+  });
 }

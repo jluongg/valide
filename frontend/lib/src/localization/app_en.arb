@@ -4,21 +4,32 @@
     "description": "The title of the application"
   },
 
-  "emailLoginButton": "Log in with email",  
-  "@emailLoginButton": {
-    "description": "Log in with email button."
-  },
 
-  "phoneLoginButton": "Log in with phone number",  
+  "phoneLoginButton": "Log in by phone",  
   "@phoneLoginButton": {
-    "description": "Log in with phone number button."
+    "description": "Log in by phone button."
   },
 
-  "email": "Email",
-  "enter_email": "Enter your email address",
-  "please_enter_valid_email": "Please enter a valid email address",
+  "phone_number": "Phone number",
+  "enter_phone_number": "Enter your phone number",
+  "search_country": "Search country",
+  "please_enter_valid_phone_number": "Please enter a valid phone number",
   "login": "login",
   "verify_code": "Verify the code",
   "password": "Password",
-  "enter_password": "Enter the received password"
+  "enter_password": "Enter the received password",
+  "connection_error": "You are using the app in offline mode.",
+  "login_failed": "Login failed.",
+  "login_page_title": "Your number?",
+  "country_code" : "US",
+  "cgu_text": "By registering, you agree to our Terms of Service, Privacy Policy, and Cookies Policy. Your use of the app is subject to these policies, which outline how we handle your data and use cookies.",
+  "cgu_url" : "https://www.valide.io/en/tos",
+  "cgu_link_text" : "Terms of Service",
+  "pol_confidentialite_url" : "https://www.valide.io/en/privacy",
+  "pol_confidentialite_link_text" : "Privacy Policy",
+  "cookies_link_text": "Cookies Policy",
+  "cookies_url" : "https://www.valide.io/en/cookies",
+  "challenge_page_title" : "Enter the code",
+  "challenge_page_code_sent_to" : "Code sent to ",
+  "challenge_page_send_again" : "Send a new code"
 }
