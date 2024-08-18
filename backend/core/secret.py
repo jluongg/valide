@@ -1,6 +1,7 @@
 from cryptography.fernet import Fernet
 import sys
 from pathlib import Path
+import os
 
 
 # Generate a crypting key
@@ -35,6 +36,10 @@ def encrypt_json(input_file: Path):
     if response.lower() == "y":
         with open(output_path, "wb") as file:
             file.write(encrypted_data)
+        # Replace JSON File with encrypted data then remove it
+        with open(input_file, "wb") as file:
+            file.write(encrypted_data)
+            os.remove(input_file)
             print("SHRED UNENCRYPTED FILE")
     else:
         print("Abort")
