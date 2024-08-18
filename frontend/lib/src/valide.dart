@@ -64,6 +64,10 @@ class Valide extends StatelessWidget {
             fontWeight: FontWeight.bold,
             // letterSpacing: 0.8,
           ),
+          bodyLarge: TextStyle(
+            color: Colors.black,
+            fontSize: 20,
+          ),
         ),
         //
         //
@@ -82,7 +86,7 @@ class Valide extends StatelessWidget {
           ),
         ),
 
-        textButtonTheme: TextButtonThemeData(
+        filledButtonTheme: FilledButtonThemeData(
           style: TextButton.styleFrom(
               backgroundColor: pink, // Transparent background
               foregroundColor: Colors.white, // Text color
@@ -96,6 +100,24 @@ class Valide extends StatelessWidget {
                 fontSize: buttonFontSize,
                 fontWeight: FontWeight.w500,
                 color: Colors.white,
+              )),
+        ),
+//
+//
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+              backgroundColor: Colors.transparent, // Transparent background
+              foregroundColor: pink, // Text color
+              disabledForegroundColor: Color.fromARGB(255, 212, 212, 212),
+              disabledBackgroundColor: Colors.transparent,
+              minimumSize: Size(minDim * 0.75, 0),
+              maximumSize: Size(minDim * 0.75, maxDim),
+              padding: const EdgeInsets.all(16),
+              alignment: Alignment.center,
+              textStyle: TextStyle(
+                fontSize: buttonFontSize,
+                fontWeight: FontWeight.w500,
+                color: pink,
               )),
         ),
 //

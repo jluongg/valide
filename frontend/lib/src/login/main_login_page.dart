@@ -30,7 +30,7 @@ class MainLoginPage extends StatelessWidget {
               const Spacer(flex: 5),
               Column(
                 children: [
-                  TextButton(
+                  FilledButton(
                     onPressed: () async {
                       Navigator.pushNamed(context, '/login/phone');
                     },

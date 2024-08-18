@@ -65,6 +65,27 @@ class Backend extends ChangeNotifier {
     }
   }
 
+  Future<Response?> signinupResendCode() async {
+    try {
+      var response = await client.post(
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        Uri.http(baseUrl, '/auth/signinup/code/resend'),
+        body: jsonEncode(<String, String>{
+          "deviceId": deviceId!,
+          "preAuthSessionId": preAuthSessionId!,
+        }),
+      );
+      return response;
+    } on SocketException {
+      return null;
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
   Future<Response?> signinupConsumeCode(String code) async {
     try {
       var response = await client.post(
@@ -81,14 +102,13 @@ class Backend extends ChangeNotifier {
       if (response.statusCode == 200) {
         var response_json = jsonDecode(response.body);
         print(response_json);
-        print(response_json);
-        print(response_json);
-        print(response_json);
         if (response_json["status"] == "OK" &&
             response_json["createdNewUser"]) {
           user = response_json["user"];
           print(user);
           notifyListeners();
+        } else {
+          return response;
         }
       }
       return response;

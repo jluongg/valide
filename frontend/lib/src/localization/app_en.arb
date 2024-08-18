@@ -20,7 +20,8 @@
   "enter_password": "Enter the received password",
   "connection_error": "You are using the app in offline mode.",
   "login_failed": "Login failed.",
-  "login_page_title": "Login",
+  "login_page_title": "Your number?",
+  "country_code" : "US",
   "cgu_text": "By registering, you agree to our Terms of Service, Privacy Policy, and Cookies Policy. Your use of the app is subject to these policies, which outline how we handle your data and use cookies.",
   "cgu_url" : "https://www.valide.io/en/tos",
   "cgu_link_text" : "Terms of Service",
@@ -28,5 +29,7 @@
   "pol_confidentialite_link_text" : "Privacy Policy",
   "cookies_link_text": "Cookies Policy",
   "cookies_url" : "https://www.valide.io/en/cookies",
-  "challenge_page_title":"Enter the code"
+  "challenge_page_title" : "Enter the code",
+  "challenge_page_code_sent_to" : "Code sent to ",
+  "challenge_page_send_again" : "Send a new code"
 }

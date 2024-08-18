@@ -86,8 +86,7 @@ class PhoneFormState extends State<PhoneForm> {
                 labelText: AppLocalizations.of(context)!.search_country,
               ),
             ),
-            initialCountryCode:
-                Localizations.localeOf(context).languageCode.toUpperCase(),
+            initialCountryCode: AppLocalizations.of(context)!.country_code,
             languageCode: Localizations.localeOf(context).languageCode,
             invalidNumberMessage:
                 AppLocalizations.of(context)!.please_enter_valid_phone_number,
@@ -98,7 +97,7 @@ class PhoneFormState extends State<PhoneForm> {
             },
           ),
           const SizedBox(height: 50),
-          TextButton(
+          FilledButton(
             onPressed: (_buttonEnabled &&
                     _formKey.currentState != null &&
                     _formKey.currentState!.validate())
@@ -106,21 +105,29 @@ class PhoneFormState extends State<PhoneForm> {
                     setState(() {
                       _buttonEnabled = false;
                     });
-                    print("Phone number entered : ");
-                    print(completePhoneNumber);
                     var signature = await SmsAutoFill().getAppSignature;
                     print("App signature : ");
                     print(signature);
-                    var response =
-                        await Provider.of<Backend>(context, listen: false)
-                            .signinupSubmitEmail(_controller.text);
                     if (context.mounted) {
-                      if (response != null && response.statusCode == 200) {
-                        Navigator.pushNamed(context, '/login/challenge');
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text(AppLocalizations.of(context)!
-                                .connection_error)));
+                      var response =
+                          await Provider.of<Backend>(context, listen: false)
+                              .signinupSubmitEmail(_controller.text);
+                      if (context.mounted) {
+                        if (response != null && response.statusCode == 200) {
+                          print(response);
+                          Map<String, String> args = {
+                            "phoneNumber": completePhoneNumber,
+                          };
+                          Navigator.pushNamed(
+                            context,
+                            '/login/challenge',
+                            arguments: args,
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text(AppLocalizations.of(context)!
+                                  .connection_error)));
+                        }
                       }
                     }
                     setState(() {
@@ -132,8 +139,8 @@ class PhoneFormState extends State<PhoneForm> {
               AppLocalizations.of(context)!.login,
             ),
           ),
-          const SizedBox(
-            height: 30,
+          const Spacer(
+            flex: 10,
           ),
           TextFormField(
             onChanged: (value) => setState(() {}),

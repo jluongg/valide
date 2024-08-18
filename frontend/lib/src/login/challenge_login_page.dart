@@ -5,7 +5,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:frontend/src/providers/backend.dart';
 import 'package:provider/provider.dart';
 import 'package:frontend/src/widgets/outer_padding.dart';
-// import 'package:flutter_pin_code_fields/flutter_pin_code_fields.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 import 'package:frontend/src/graphic_charter.dart';
 
@@ -19,6 +18,10 @@ class ChallengeLoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Retrieve the argument passed using ModalRoute
+    final Map<String, String>? args =
+        ModalRoute.of(context)?.settings.arguments as Map<String, String>?;
+
     return Scaffold(
       appBar: AppBar(),
       body: OuterPadding(
@@ -30,10 +33,27 @@ class ChallengeLoginPage extends StatelessWidget {
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               const Spacer(flex: 1),
-              const Flexible(
-                flex: 5,
-                child: ChallengeForm(),
+              Flexible(
+                flex: 3,
+                child: ChallengeForm(args: args),
               ),
+              const Spacer(flex: 1),
+              Text.rich(
+                TextSpan(
+                    text: AppLocalizations.of(context)!
+                        .challenge_page_code_sent_to,
+                    style: Theme.of(context).textTheme.bodyLarge,
+                    children: [
+                      TextSpan(
+                        text: args?["phoneNumber"],
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                    ]),
+              ),
+              const SizedBox(height: 20),
+              const ResendButton(),
             ],
           ),
         ),
@@ -42,9 +62,59 @@ class ChallengeLoginPage extends StatelessWidget {
   }
 }
 
+class ResendButton extends StatefulWidget {
+  const ResendButton({
+    super.key,
+  });
+
+  @override
+  State<ResendButton> createState() => _ResendButtonState();
+}
+
+class _ResendButtonState extends State<ResendButton> {
+  var _enabledButton = true;
+  var _cooldown = 2;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      onPressed: _enabledButton
+          ? () async {
+              if (context.mounted) {
+                setState(() {
+                  _enabledButton = false;
+                  _cooldown *= 2;
+                });
+
+                var response =
+                    await Provider.of<Backend>(context, listen: false)
+                        .signinupResendCode();
+                if (response != null && response.statusCode == 200) {
+                } else if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text(
+                          AppLocalizations.of(context)!.connection_error)));
+                }
+                Future.delayed(Duration(seconds: _cooldown), () {
+                  setState(() {
+                    _enabledButton = true; // Enable the button again
+                  });
+                });
+              }
+            }
+          : null,
+      child: Text(
+        AppLocalizations.of(context)!.challenge_page_send_again,
+      ),
+    );
+  }
+}
+
 // Define a custom Form widget.
 class ChallengeForm extends StatefulWidget {
-  const ChallengeForm({super.key});
+  final Map<String, String>? args;
+
+  const ChallengeForm({super.key, required this.args});
 
   @override
   ChallengeFormState createState() {
@@ -73,84 +143,41 @@ class ChallengeFormState extends State<ChallengeForm> {
     return Form(
       autovalidateMode: AutovalidateMode.always,
       key: _formKey,
-      child: Column(
-        children: [
-          PinFieldAutoFill(
-            cursor: null,
-            enableInteractiveSelection: false,
-            autoFocus: true,
-            decoration: BoxLooseDecoration(
-              strokeColorBuilder: PinListenColorBuilder(gold, pink),
-              radius: const Radius.circular(20),
-              strokeWidth: 2,
-              gapSpace: 10,
-            ),
-            onCodeChanged: (text) async {
-              if (text?.length == 6) {
-                Navigator.pushNamed(context, '/login/phone');
-                var response =
-                    await Provider.of<Backend>(context, listen: false)
-                        .signinupConsumeCode(text!);
-                print(response);
-                print(response?.statusCode);
-                if (response != null && response.statusCode == 200) {
-                  var response_json = jsonDecode(response.body);
-                  if (response_json["status"] == "OK" &&
-                      response_json["createdNewUser"]) {
-                    Navigator.pushNamed(context, '/account/voucher/find');
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content:
-                            Text(AppLocalizations.of(context)!.login_failed)));
-                    Navigator.popAndPushNamed(context, '/login/challenge');
-                  }
+      child: PinFieldAutoFill(
+        cursor: null,
+        enableInteractiveSelection: false,
+        autoFocus: true,
+        decoration: BoxLooseDecoration(
+          strokeColorBuilder: PinListenColorBuilder(gold, pink),
+          radius: const Radius.circular(20),
+          strokeWidth: 2,
+          gapSpace: 10,
+        ),
+        onCodeChanged: (text) async {
+          if (text?.length == 6) {
+            var response = await Provider.of<Backend>(context, listen: false)
+                .signinupConsumeCode(text!);
+            if (context.mounted) {
+              if (response != null && response.statusCode == 200) {
+                Map<String, dynamic> response_json = jsonDecode(response.body);
+                if (response_json["status"].toString() == "OK" &&
+                    response_json["createdNewUser"] == true) {
+                  Navigator.pushNamed(context, '/account/voucher/find');
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text(
-                          AppLocalizations.of(context)!.connection_error)));
+                      content:
+                          Text(AppLocalizations.of(context)!.login_failed)));
+                  Navigator.popAndPushNamed(context, '/login/challenge',
+                      arguments: widget.args);
                 }
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content:
+                        Text(AppLocalizations.of(context)!.connection_error)));
               }
-            },
-          ),
-          // Theme(
-          //   data: ThemeData(),
-          //   child: PinCodeFields(
-          //     fieldBorderStyle: FieldBorderStyle.square,
-          //     fieldHeight: 60.0,
-          //     borderColor: pink,
-          //     borderRadius: BorderRadius.circular(20.0),
-          //     activeBorderColor: gold,
-          //     length: 6,
-          //     keyboardType: TextInputType.number,
-          //     autofocus: true,
-          //     onComplete: (text) async {
-          //       var response =
-          //           await Provider.of<Backend>(context, listen: false)
-          //               .signinupConsumeCode(text);
-          //       print(response);
-          //       print(response?.statusCode);
-          //       if (context.mounted) {
-          //         if (response != null && response.statusCode == 200) {
-          //           var responseJson = jsonDecode(response.body);
-          //           if (responseJson["status"] == "OK" &&
-          //               responseJson["createdNewUser"]) {
-          //             Navigator.pushNamed(context, '/account/voucher/find');
-          //           } else {
-          //             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          //                 content: Text(
-          //                     AppLocalizations.of(context)!.login_failed)));
-          //             Navigator.popAndPushNamed(context, '/login/challenge');
-          //           }
-          //         } else {
-          //           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          //               content: Text(
-          //                   AppLocalizations.of(context)!.connection_error)));
-          //         }
-          //       }
-          //     },
-          //   ),
-          // ),
-        ],
+            }
+          }
+        },
       ),
     );
   }
