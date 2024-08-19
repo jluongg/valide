@@ -8,7 +8,7 @@ import 'package:sms_autofill/sms_autofill.dart';
 
 import 'package:intl_phone_field/intl_phone_field.dart';
 
-/// Main login page with a button connection.
+/// Input page for phone number.
 class LoginPage extends StatelessWidget {
   const LoginPage({
     super.key,
@@ -111,10 +111,9 @@ class PhoneFormState extends State<PhoneForm> {
                     if (context.mounted) {
                       var response =
                           await Provider.of<Backend>(context, listen: false)
-                              .signinupSubmitEmail(_controller.text);
+                              .signinupSubmitEmail(context, _controller.text);
                       if (context.mounted) {
-                        if (response != null && response.statusCode == 200) {
-                          print(response);
+                        if (response != null) {
                           Map<String, String> args = {
                             "phoneNumber": completePhoneNumber,
                           };
@@ -123,10 +122,6 @@ class PhoneFormState extends State<PhoneForm> {
                             '/login/challenge',
                             arguments: args,
                           );
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text(AppLocalizations.of(context)!
-                                  .connection_error)));
                         }
                       }
                     }

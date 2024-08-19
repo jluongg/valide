@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:frontend/src/providers/backend.dart';
@@ -8,7 +6,7 @@ import 'package:frontend/src/widgets/outer_padding.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 import 'package:frontend/src/graphic_charter.dart';
 
-/// Main login page with a button connection.
+/// Input page for code.
 class ChallengeLoginPage extends StatelessWidget {
   const ChallengeLoginPage({
     super.key,
@@ -86,15 +84,8 @@ class _ResendButtonState extends State<ResendButton> {
                   _cooldown *= 2;
                 });
 
-                var response =
-                    await Provider.of<Backend>(context, listen: false)
-                        .signinupResendCode();
-                if (response != null && response.statusCode == 200) {
-                } else if (context.mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text(
-                          AppLocalizations.of(context)!.connection_error)));
-                }
+                await Provider.of<Backend>(context, listen: false)
+                    .signinupResendCode(context);
                 Future.delayed(Duration(seconds: _cooldown), () {
                   setState(() {
                     _enabledButton = true; // Enable the button again
@@ -156,24 +147,14 @@ class ChallengeFormState extends State<ChallengeForm> {
         onCodeChanged: (text) async {
           if (text?.length == 6) {
             var response = await Provider.of<Backend>(context, listen: false)
-                .signinupConsumeCode(text!);
+                .signinupConsumeCode(context, text!);
             if (context.mounted) {
-              if (response != null && response.statusCode == 200) {
-                Map<String, dynamic> response_json = jsonDecode(response.body);
-                if (response_json["status"].toString() == "OK" &&
-                    response_json["createdNewUser"] == true) {
-                  Navigator.pushNamed(context, '/account/voucher/find');
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content:
-                          Text(AppLocalizations.of(context)!.login_failed)));
-                  Navigator.popAndPushNamed(context, '/login/challenge',
-                      arguments: widget.args);
-                }
+              if (response != null) {
+                // todo, ask route JIMMY
+                Navigator.pushNamed(context, '/account/voucher/find');
               } else {
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content:
-                        Text(AppLocalizations.of(context)!.connection_error)));
+                Navigator.popAndPushNamed(context, '/login/challenge',
+                    arguments: widget.args);
               }
             }
           }

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:frontend/src/loading_page.dart';
 import 'package:frontend/src/login/login_page.dart';
 import 'package:frontend/src/login/challenge_login_page.dart';
-import 'package:frontend/src/login/find_voucher_page.dart';
+import 'package:frontend/src/login/add_voucher_page.dart';
 
 import 'package:frontend/src/login/main_login_page.dart';
+import 'package:frontend/src/main_page.dart';
 
 import 'package:frontend/src/graphic_charter.dart';
 
@@ -180,14 +182,18 @@ class Valide extends StatelessWidget {
           builder: (BuildContext context) {
             {
               switch (routeSettings.name) {
+                case "/login":
+                  return const MainLoginPage();
                 case "/login/phone":
                   return const LoginPage();
                 case "/login/challenge":
                   return const ChallengeLoginPage();
-                case "/account/voucher/find":
-                  return const FindVoucherPage();
+                case "/account/voucher/add":
+                  return const AddVoucherPage();
+                case "/main":
+                  return const MainPage();
                 default:
-                  return const MainLoginPage();
+                  return const LoadingPage();
               }
             }
           },

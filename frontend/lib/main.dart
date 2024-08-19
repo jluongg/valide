@@ -13,6 +13,7 @@ const backend_url =
 
 void main() async {
   // SuperTokens initialization
+  WidgetsFlutterBinding.ensureInitialized();
   SuperTokens.init(
     apiDomain: backend_url,
     apiBasePath: "/auth",
