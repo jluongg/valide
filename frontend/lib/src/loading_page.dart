@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:supertokens_flutter/supertokens.dart';
+import 'package:lottie/lottie.dart';
 
 class LoadingPage extends StatefulWidget {
   const LoadingPage({super.key});
@@ -10,15 +11,9 @@ class LoadingPage extends StatefulWidget {
 
 class LoadingPageState extends State<LoadingPage>
     with SingleTickerProviderStateMixin {
-  AnimationController? _controller;
-
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      duration: Duration(seconds: 2),
-      vsync: this,
-    )..repeat();
 
     // Call the Future action after the widget is built
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -40,32 +35,15 @@ class LoadingPageState extends State<LoadingPage>
   }
 
   @override
-  void dispose() {
-    _controller?.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: AnimatedLogo(controller: _controller!),
+        child: Lottie.asset(
+          'assets/splash.json',
+          width: 300,
+          height: 300,
+        ),
       ),
-    );
-  }
-}
-
-// Animated logo widget
-class AnimatedLogo extends StatelessWidget {
-  final AnimationController controller;
-
-  AnimatedLogo({required this.controller});
-
-  @override
-  Widget build(BuildContext context) {
-    return RotationTransition(
-      turns: controller,
-      child: FlutterLogo(size: 100),
     );
   }
 }

@@ -8,7 +8,10 @@ if [ "$USER" == "guillaume" ]; then
     echo "docker service launched"
     sudo docker compose up -d
     echo "supertokens and postgresql dockers running"
-    python3 backend/main.py &
+    cd backend
+    echo "enter secret main password"
+    read password
+    echo $password | python3 main.py &
     echo "backend running"
 
 else

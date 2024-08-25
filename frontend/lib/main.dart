@@ -15,7 +15,7 @@ void main() async {
   // SuperTokens initialization
   WidgetsFlutterBinding.ensureInitialized();
   SuperTokens.init(
-    apiDomain: backend_url,
+    apiDomain: "http://$backend_url",
     apiBasePath: "/auth",
   );
 

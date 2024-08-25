@@ -24,6 +24,7 @@ from supertokens_python.recipe.passwordless import ContactEmailOrPhoneConfig
 secrets_data = json.loads(core.secret.decrypt_json("./core/keys.enc"))
 
 init(
+    debug=True,
     app_info=InputAppInfo(
         app_name="frontend",
         api_domain="http://localhost:8080",

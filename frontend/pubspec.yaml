@@ -24,6 +24,9 @@ dependencies:
   intl_phone_field: ^3.2.0
   flutter_pin_code_fields: ^2.2.0
   sms_autofill: ^2.0.0
+  animated_svg: ^2.1.0
+  flutter_svg: ^2.0.10+1
+  lottie: ^3.1.2
 
 
 dev_dependencies:
@@ -40,7 +43,7 @@ flutter:
 
   assets:
     # Add assets from the images directory to the application.
-    - assets/images/
+    - assets/
 
 flutter_native_splash:
   # This package generates native code to customize Flutter's default white native splash screen

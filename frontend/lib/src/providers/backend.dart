@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:supertokens_flutter/supertokens.dart';
 
 // Import http from the SuperTokens package to make authenticated requests
 import 'package:supertokens_flutter/http.dart' as http;
@@ -124,6 +126,8 @@ class Backend extends ChangeNotifier {
       var response = await client.post(
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
+          'rid':
+              'passwordless', // recipe id to disambiguate the route if we ever add new recipes
         },
         Uri.http(baseUrl, '/auth/signinup/code/consume'),
         body: jsonEncode(<String, String>{
@@ -134,7 +138,11 @@ class Backend extends ChangeNotifier {
       );
       if (handleClientDisconnectedError(response, context) != null) {
         var responseJson = jsonDecode(response.body);
+        log(response.headers.toString());
         if (responseJson["status"] == "OK") {
+          bool sessionExists = await SuperTokens.doesSessionExist();
+          print(sessionExists);
+
           return response;
         } else {
           if (context.mounted) {
