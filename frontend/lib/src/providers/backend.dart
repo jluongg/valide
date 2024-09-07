@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
@@ -18,6 +19,7 @@ class Backend extends ChangeNotifier {
   final client = http.Client();
   String? deviceId;
   String? preAuthSessionId;
+  final defaultTimeout = const Duration(seconds: 10);
 
   Backend({required this.baseUrl});
 
@@ -79,7 +81,7 @@ class Backend extends ChangeNotifier {
   Future<Response?> signinupSubmitEmail(
       BuildContext context, String email) async {
     try {
-      var response = await client.post(
+      Response? response = await client.post(
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -87,7 +89,7 @@ class Backend extends ChangeNotifier {
         body: jsonEncode(<String, String>{
           "email": email,
         }),
-      );
+      ).timeout(defaultTimeout);
       if (handleClientDisconnectedError(response, context) != null) {
         var response_json = jsonDecode(response.body);
         deviceId = response_json["deviceId"];
@@ -96,6 +98,8 @@ class Backend extends ChangeNotifier {
       }
       return null;
     } on SocketException {
+      handleServerDisconnectedError(context);
+    } on TimeoutException {
       handleServerDisconnectedError(context);
     }
     return null;
@@ -112,9 +116,11 @@ class Backend extends ChangeNotifier {
           "deviceId": deviceId!,
           "preAuthSessionId": preAuthSessionId!,
         }),
-      );
+      ).timeout(defaultTimeout);
       return handleClientDisconnectedError(response, context);
     } on SocketException {
+      handleServerDisconnectedError(context);
+    } on TimeoutException {
       handleServerDisconnectedError(context);
     }
     return null;
@@ -135,7 +141,7 @@ class Backend extends ChangeNotifier {
           "preAuthSessionId": preAuthSessionId!,
           "userInputCode": code,
         }),
-      );
+      ).timeout(defaultTimeout);
       if (handleClientDisconnectedError(response, context) != null) {
         var responseJson = jsonDecode(response.body);
         log(response.headers.toString());
@@ -153,6 +159,8 @@ class Backend extends ChangeNotifier {
         }
       }
     } on SocketException {
+      handleServerDisconnectedError(context);
+    } on TimeoutException {
       handleServerDisconnectedError(context);
     }
     return null;

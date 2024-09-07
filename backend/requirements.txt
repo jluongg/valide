@@ -1,6 +1,6 @@
 cryptography==42.0.5
 fastapi==0.112.0
 pydantic==2.8.2
-starlette==0.38.2
+starlette>=0.37.2
 supertokens_python==0.18.10
 uvicorn==0.30.5
